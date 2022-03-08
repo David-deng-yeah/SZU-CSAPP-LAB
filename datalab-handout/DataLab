@@ -1,0 +1,86 @@
+#include<stdio.h>
+
+int bitAnd(int x,int y){
+    return ~(~x|~y);
+};
+
+int getByte(int x,int n){
+    x=x<<((4+~n)<<3);
+    x=x>>24;
+    return x;
+};
+
+int logicalShift(int x,int n){
+    int bitMask=~((1<<31)>>(n-1));
+    x=x>>n;
+    return x&bitMask;
+};
+
+int tmin(){
+    return 0x1<<31;
+}
+
+int fitsBits(int x,int n){
+    int tmp=(x<<(33+~n))>>(33+~n);
+    return !((~tmp&x)|(tmp&~x));
+}
+
+int divpwr2(int x,int n){
+    int bitmask=x>>31;//符号位拓展
+    printf("0x%x\n",bitmask);
+    int bias=(1<<n)+~0;
+    printf("0x%x\n",bias);
+    return (x+(bias&bitmask))>>n;/*如果是正数，bitmask全为0，将bias掩盖，如果是负数，bitmask全为1，bias保留*/
+}
+
+int negate(int x){
+    return ~x+1;
+}
+
+int isPositive(int x){
+    return !(x>>31);
+}
+
+int isLessOrEqual(int x,int y){//14
+    int bias=((!(x+(~y)+1)<<31)>>31)&((1<<31)>>31);
+    return !(~(((x+(~y)+1)>>31)+bias));
+}
+
+int bang(int x){
+    return ((x>>31&1)|(((~x+1)>>31)&1))^1;
+}
+
+unsigned float_neg(unsigned uf){
+    unsigned int temp=uf&0x7FFFFFFF;//将符号位变为0
+    unsigned int result=uf^0x80000000;//取负
+    if(temp>0x7F800000)//为NAN
+        result=uf;
+    return result;
+}
+
+int bitCount(int x){
+    return 2;
+}
+
+int ilog2(int x){
+    return 2;
+}
+
+unsigned float_i2f(int x){
+    return 2;
+}
+
+unsigned float_twice(unsigned uf){
+    
+}
+
+int main()
+{
+    //printf("0x%x\n",-12);
+
+    float x=-25345435345435;
+    //printf("%u",float_neg(x));
+    float y=0xFF800000;
+    printf("0x%x",x);
+    return 0;
+}

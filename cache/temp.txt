@@ -1,0 +1,103 @@
+08048ad0 <getbuf>:
+ 8048ad0:	55                   	push   %ebp//ebp推入栈
+ 8048ad1:	89 e5                	mov    %esp,%ebp//帧指针ebp=esp
+ 8048ad3:	83 ec 28             	sub    $0x28,%esp//栈开辟40个字节
+ 8048ad6:	8d 45 e8             	lea    -0x18(%ebp),%eax//eax=原esp-24
+ 8048ad9:	89 04 24             	mov    %eax,(%esp)//esp=原esp-24
+ 8048adc:	e8 df fe ff ff       	call   80489c0 <Gets>//原esp-24传入gets作为buf首地址
+ 8048ae1:	c9                   	leave  
+ 8048ae2:	b8 01 00 00 00       	mov    $0x1,%eax//eax=1
+ 8048ae7:	c3                   	ret    //返回1
+ 8048ae8:	90                   	nop
+ 8048ae9:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+ 
+ 08048eb0 <smoke>:
+ 8048eb0:	55                   	push   %ebp//保存ebp
+ 8048eb1:	89 e5                	mov    %esp,%ebp//ebp=esp，为帧指针
+ 8048eb3:	83 ec 08             	sub    $0x8,%esp//esp开辟8个字节的空间
+ 8048eb6:	c7 04 24 f7 95 04 08 	movl   $0x80495f7,(%esp)//esp
+ 8048ebd:	e8 96 f8 ff ff       	call   8048758 <puts@plt>
+ 8048ec2:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
+ 8048ec9:	e8 22 fc ff ff       	call   8048af0 <validate>
+ 8048ece:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
+ 8048ed5:	e8 0e f9 ff ff       	call   80487e8 <exit@plt>
+ 8048eda:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+ 
+ 08048e60 <fizz>:
+ 8048e60:	55                   	push   %ebp//保存ebp
+ 8048e61:	89 e5                	mov    %esp,%ebp//帧指针ebp=esp
+ 8048e63:	83 ec 08             	sub    $0x8,%esp//栈开辟8个字节空间
+ 8048e66:	8b 45 08             	mov    0x8(%ebp),%eax//eax=M[esp+8]
+ 8048e69:	3b 05 d4 a1 04 08    	cmp    0x804a1d4,%eax//eax和cookies比较
+ 8048e6f:	74 1f                	je     .L1//eax和那个相等就跳转
+ 8048e71:	89 44 24 04          	mov    %eax,0x4(%esp)//M[ebp+4]=eax?
+ 8048e75:	c7 04 24 8c 98 04 08 	movl   $0x804988c,(%esp)//M[esp]=xxx  
+ 8048e7c:	e8 27 f9 ff ff       	call   80487a8 <printf@plt>
+ .L2
+ 8048e81:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)//M[esp]=0
+ 8048e88:	e8 5b f9 ff ff       	call   80487e8 <exit@plt>//退出
+ 8048e8d:	8d 76 00             	lea    0x0(%esi),%esi
+ .L1
+ 8048e90:	89 44 24 04          	mov    %eax,0x4(%esp)//一样,M[ebp+4]=eax
+ 8048e94:	c7 04 24 d9 95 04 08 	movl   $0x80495d9,(%esp)//M[esp]=不一样的值
+ 8048e9b:	e8 08 f9 ff ff       	call   80487a8 <printf@plt>
+ 8048ea0:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)//M[esp]=1
+ 8048ea7:	e8 44 fc ff ff       	call   8048af0 <validate>//cookies验证成功
+ 8048eac:	eb d3                	jmp    .L2
+ 8048eae:	89 f6                	mov    %esi,%esi
+ 
+ 08048e10 <bang>:
+ 8048e10:	55                   	push   %ebp//保存ebp
+ 8048e11:	89 e5                	mov    %esp,%ebp//帧指针压栈
+ 8048e13:	83 ec 08             	sub    $0x8,%esp//栈开辟8个字节的内存空间
+ 8048e16:	a1 c4 a1 04 08       	mov    0x804a1c4,%eax//eax=M[global_value]
+ 8048e1b:	3b 05 d4 a1 04 08    	cmp    0x804a1d4,%eax//比较global_value和cookies
+ 8048e21:	74 1d                	je     .L1//相等则跳转.L1
+ 8048e23:	89 44 24 04          	mov    %eax,0x4(%esp)//保存eax
+ 8048e27:	c7 04 24 bb 95 04 08 	movl   $0x80495bb,(%esp)//保存"Misfire: global_value = 0x%x\n"
+ 8048e2e:	e8 75 f9 ff ff       	call   80487a8 <printf@plt>
+ 8048e33:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)//M[esp]=0
+ 8048e3a:	e8 a9 f9 ff ff       	call   80487e8 <exit@plt>//结束
+ 8048e3f:	90                   	nop
+ .L1
+ 8048e40:	89 44 24 04          	mov    %eax,0x4(%esp)//M[esp+4]=eax
+ 8048e44:	c7 04 24 64 98 04 08 	movl   $0x8049864,(%esp)//esp保存"Bang!: You set global_value to 0x%x\n"
+ 8048e4b:	e8 58 f9 ff ff       	call   80487a8 <printf@plt>
+ 8048e50:	c7 04 24 02 00 00 00 	movl   $0x2,(%esp)//M[esp]=2
+ 8048e57:	e8 94 fc ff ff       	call   8048af0 <validate>//成功
+ 8048e5c:	eb d5                	jmp    8048e33 <bang+0x23>
+ 8048e5e:	89 f6                	mov    %esi,%esi
+ 
+ 08048da0 <test>:
+ 8048da0:	55                   	push   %ebp
+ 8048da1:	89 e5                	mov    %esp,%ebp
+ 8048da3:	83 ec 18             	sub    $0x18,%esp
+ 8048da6:	c7 45 fc ef be ad de 	movl   $0xdeadbeef,-0x4(%ebp)
+ 8048dad:	e8 1e fd ff ff       	call   8048ad0 <getbuf>//调用getbuf函数，不让他返回到test
+ 8048db2:	89 c2                	mov    %eax,%edx
+ 8048db4:	8b 45 fc             	mov    -0x4(%ebp),%eax
+ 8048db7:	3d ef be ad de       	cmp    $0xdeadbeef,%eax
+ 8048dbc:	74 12                	je     8048dd0 <test+0x30>
+ 8048dbe:	c7 04 24 18 98 04 08 	movl   $0x8049818,(%esp)
+ 8048dc5:	e8 8e f9 ff ff       	call   8048758 <puts@plt>
+ 8048dca:	c9                   	leave  
+ 8048dcb:	c3                   	ret    
+ 8048dcc:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+ 8048dd0:	3b 15 d4 a1 04 08    	cmp    0x804a1d4,%edx
+ 8048dd6:	74 18                	je     8048df0 <test+0x50>
+ 8048dd8:	89 54 24 04          	mov    %edx,0x4(%esp)
+ 8048ddc:	c7 04 24 83 95 04 08 	movl   $0x8049583,(%esp)
+ 8048de3:	e8 c0 f9 ff ff       	call   80487a8 <printf@plt>
+ 8048de8:	c9                   	leave  
+ 8048de9:	c3                   	ret    
+ 8048dea:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+ 8048df0:	89 54 24 04          	mov    %edx,0x4(%esp)
+ 8048df4:	c7 04 24 9e 95 04 08 	movl   $0x804959e,(%esp)
+ 8048dfb:	e8 a8 f9 ff ff       	call   80487a8 <printf@plt>
+ 8048e00:	c7 04 24 03 00 00 00 	movl   $0x3,(%esp)
+ 8048e07:	e8 e4 fc ff ff       	call   8048af0 <validate>
+ 8048e0c:	c9                   	leave  
+ 8048e0d:	c3                   	ret    
+ 8048e0e:	89 f6                	mov    %esi,%esi
+ 
+ 

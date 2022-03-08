@@ -1,0 +1,15 @@
+char rotate_descr[] = "rotate1: ...";
+void rotate(int dim, pixel *src, pixel*dst)
+{
+    int i,j,i1,j1;
+    for(i1=0;i1<dim;i1+=4)
+        for(j1=0;j1<dim;j1+=4)
+            for(i=i1;i<i1+4;i++)
+                for(j=j1;j<j1+4;j++)
+                    dst[RIDX(dim-1-j,i,dim)]=src[RIDX(i,j,dim)];
+    for(i1=0;i1<dim;i1+=32)
+        for(j1=0;j1<dim;j1+=32)
+            for(i=j1;i<i1+32;i+=1)
+                for(j=j1;j<j1+32;j+=1)
+                    dst[RIDX(dim-1-j,i,dim)]=  src[RIDX(i,j,dim)];
+}
